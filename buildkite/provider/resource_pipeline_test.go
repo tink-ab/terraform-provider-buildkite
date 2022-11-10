@@ -17,7 +17,7 @@ func TestAccPipeline_basic_unknown(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBuildkitePipelineDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccPipeline_basicBitbucket,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckBuildkitePipelineBasicAttributesFactory("bitbucket"),
@@ -43,7 +43,7 @@ func TestAccPipeline_basic_beanstalk(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBuildkitePipelineDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccPipeline_basicGitlab,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckBuildkitePipelineBasicAttributesFactory("gitlab"),
@@ -62,7 +62,7 @@ func TestAccPipeline_basic_github(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBuildkitePipelineDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccPipeline_githubSettingsTriggerModeDeployment,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("buildkite_pipeline.test_foo", "github_settings.#", "1"),
@@ -90,7 +90,7 @@ func TestAccPipeline_basic_bitbucket(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBuildkitePipelineDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccPipeline_githubSettingsBuildTags,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet("buildkite_pipeline.test_foo", "webhook_url"),
@@ -109,7 +109,7 @@ func TestAccPipeline_basic_gitlab(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckBuildkitePipelineDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccPipeline_bitbucketSettingsBuildTags,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("buildkite_pipeline.test_foo", "bitbucket_settings.#", "1"),

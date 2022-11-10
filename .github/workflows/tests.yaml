@@ -1,0 +1,55 @@
+name: tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_call:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    env:
+      GO_VERSION: 1.19
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v3.3.1
+        with:
+          go-version: "${{ env.GO_VERSION }}"
+
+      - name: Gofmt
+        run: if [ "$(gofmt -l . | wc -l)" -gt 0 ]; then gofmt -d . && exit 1; fi
+
+      # Populating the modcache with used modules need to be done at some point
+      # before running vet, test, build. Run this as a separate step to give
+      # an indication of the time it takes to download them.
+      - name: Go mod download
+        run: go mod download
+
+      - name: Go Vet
+        run: go vet ./...
+
+      - name: Go Build
+        run: ./build.sh
+
+      - name: Go Test
+        run: go test ./...
+
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: golangci-lint
+        uses: tink-ab/golangci-lint-action@17d4bc397f2db155dd2da18bb3cbc0f01c4c0dd1
+        with:
+          args: --timeout=5m

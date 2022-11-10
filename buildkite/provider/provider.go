@@ -29,12 +29,12 @@ func Provider() *schema.Provider {
 		},
 
 		Schema: map[string]*schema.Schema{
-			"organization": &schema.Schema{
+			"organization": {
 				Type:        schema.TypeString,
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("BUILDKITE_ORGANIZATION", nil),
 			},
-			"api_token": &schema.Schema{
+			"api_token": {
 				Type:        schema.TypeString,
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("BUILDKITE_API_TOKEN", nil),

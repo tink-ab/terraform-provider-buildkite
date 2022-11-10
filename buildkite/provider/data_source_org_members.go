@@ -16,7 +16,7 @@ func dataSourceOrgMembers() *schema.Resource {
 	return &schema.Resource{
 		ReadContext: dataSourceOrgMembersRead,
 		Schema: map[string]*schema.Schema{
-			"members": &schema.Schema{
+			"members": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
