@@ -47,6 +47,16 @@ type teamDeleteResponse struct {
 	DeletedTeamID string `json:"deletedTeamID"`
 }
 
+type teamsResponse struct {
+	Organization struct {
+		Teams struct {
+			Edges []struct {
+				Node Team
+			}
+		}
+	}
+}
+
 func (c *Client) GetTeam(slug string) (*Team, error) {
 	req := graphql.NewRequest(`
 query GetTeam($teamSlug: ID!) {
@@ -70,6 +80,46 @@ query GetTeam($teamSlug: ID!) {
 	}
 
 	return &teamResponse.Team, nil
+}
+
+func (c *Client) GetTeams() (*[]Team, error) {
+	req := graphql.NewRequest(`
+	query GetTeams($orgSlug: ID!, $first: Int!) {
+		organization(slug: $orgSlug) {
+		  teams(first: $first) {
+			edges {
+			  node {
+				id
+				uuid
+				slug
+				name
+				description
+				createdAt
+				privacy
+				isDefaultTeam
+				defaultMemberRole
+			  }
+			}
+		  }
+		}
+	  }
+	`)
+
+	req.Var("orgSlug", c.orgSlug)
+	req.Var("first", 200)
+
+	var response teamsResponse
+	var result []Team
+
+	response = teamsResponse{}
+	if err := c.graphQLRequest(req, &response); err != nil {
+		return nil, errors.Wrapf(err, "failed to get teams")
+	}
+	for _, e := range response.Organization.Teams.Edges {
+		result = append(result, e.Node)
+	}
+
+	return &result, nil
 }
 
 func (c *Client) CreateTeam(team *Team) (*Team, error) {
