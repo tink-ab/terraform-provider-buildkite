@@ -37,6 +37,7 @@ func Provider() *schema.Provider {
 			"api_token": &schema.Schema{
 				Type:        schema.TypeString,
 				Required:    true,
+				Sensitive:   true,
 				DefaultFunc: schema.EnvDefaultFunc("BUILDKITE_API_TOKEN", nil),
 			},
 		},
