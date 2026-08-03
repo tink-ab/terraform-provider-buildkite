@@ -66,8 +66,9 @@ var (
 			},
 		},
 		"webhook_url": {
-			Type:     schema.TypeString,
-			Computed: true,
+			Type:      schema.TypeString,
+			Computed:  true,
+			Sensitive: true,
 		},
 		"configuration": {
 			Type:          schema.TypeString,
